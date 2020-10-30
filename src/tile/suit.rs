@@ -57,6 +57,11 @@ impl SuitedTile {
             Some(SuitedTile{suit : self.suit, value : self.value + 1})
         }
     }
+
+    /// Returns whether the `other` tile is the one that directly follows this one
+    pub fn followed_by(&self, other : SuitedTile) -> bool {
+        self.suit == other.suit && self.value == other.value - 1
+    }
 }
 
 
@@ -119,6 +124,20 @@ mod tests {
 
         assert_eq!(four_man, three_man.next().unwrap());
         assert_eq!(None, nine_pin.next());
+    }
+
+    #[test]
+    fn test_followed_by() {
+        let three_man = SuitedTile::new(Man, 3);
+        let four_man = SuitedTile::new(Man, 4);
+
+        let one_pin = SuitedTile::new(Pin, 1);
+        let nine_pin = SuitedTile::new(Pin, 9);
+        let one_sou = SuitedTile::new(Sou, 1);
+
+        assert!(three_man.followed_by(four_man));
+        assert!(!nine_pin.followed_by(one_pin));
+        assert!(!nine_pin.followed_by(one_sou));
     }
 
     #[test]
