@@ -1,7 +1,8 @@
 use crate::game::wind::Wind;
 use crate::tile::dragon::Dragon;
 
-pub enum Honor {
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+pub enum HonorTile {
     Wind(Wind),
-    Dragon(Dragon)
+    Dragon(Dragon),
 }
