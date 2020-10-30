@@ -45,6 +45,18 @@ impl SuitedTile {
     pub fn is_simple(&self) -> bool {
         self.value > 1 && self.value < 9
     }
+
+    pub fn next_dora(&self) -> SuitedTile {
+        SuitedTile{suit : self.suit, value : (self.value % 9) + 1}
+    }
+
+    pub fn next(&self) -> Option<SuitedTile> {
+        if (self.value == 9) {
+            None
+        } else {
+            Some(SuitedTile{suit : self.suit, value : self.value + 1})
+        }
+    }
 }
 
 
@@ -96,5 +108,28 @@ mod tests {
         assert!(four_man > three_man);
         assert!(four_man < two_pin);
         assert!(eight_sou > two_pin);
+    }
+
+    #[test]
+    fn test_next() {
+        let three_man = SuitedTile::new(Man, 3);
+        let four_man = SuitedTile::new(Man, 4);
+
+        let nine_pin = SuitedTile::new(Pin, 9);
+
+        assert_eq!(four_man, three_man.next().unwrap());
+        assert_eq!(None, nine_pin.next());
+    }
+
+    #[test]
+    fn test_next_dora() {
+        let three_man = SuitedTile::new(Man, 3);
+        let four_man = SuitedTile::new(Man, 4);
+
+        let one_pin = SuitedTile::new(Pin, 1);
+        let nine_pin = SuitedTile::new(Pin, 9);
+
+        assert_eq!(four_man, three_man.next_dora());
+        assert_eq!(one_pin, nine_pin.next_dora());
     }
 }
