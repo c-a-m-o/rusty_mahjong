@@ -1,71 +1,34 @@
 mod suit;
 mod dragon;
 mod honor;
+mod tile_value;
 
-use suit::SuitedTile;
+use tile_value::TileValue;
 use suit::Suit;
-use honor::HonorTile;
 use dragon::Dragon;
 use crate::game::wind::Wind;
-use TileValue::{Suited, Honor};
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
-pub enum TileValue {
-    Suited(SuitedTile),
-    Honor(HonorTile),
+pub struct Tile {
+    value : TileValue,
+    id : u8,
 }
 
-impl TileValue {
-
-    pub fn from_suited(tile : SuitedTile) -> TileValue {
-        Suited(tile)
+impl Tile {
+    fn new(value : TileValue, id : u8) -> Tile {
+        Tile{value, id}
     }
 
-    pub fn from_honor(tile : HonorTile) -> TileValue {
-        Honor(tile)
+    fn new_suited(suit : Suit, value : u8, id : u8) -> Tile {
+        Tile{value : TileValue::new_suited(suit, value), id}
     }
 
-    pub fn new_suited(suit : Suit, value : u8) -> TileValue {
-        Suited(SuitedTile::new(suit, value))
+    fn new_wind(wind : Wind, id : u8) -> Tile {
+        Tile{value : TileValue::new_wind(wind), id}
     }
 
-    pub fn new_dragon(dragon : Dragon) -> TileValue {
-        Honor(HonorTile::Dragon(dragon))
+    fn new_dragon(dragon : Dragon, id : u8) -> Tile {
+        Tile{value : TileValue::new_dragon(dragon), id}
     }
 
-    pub fn new_wind(wind : Wind) -> TileValue {
-        Honor(HonorTile::Wind(wind))
-    }
-
-
-    pub fn next_dora(&self) -> TileValue {
-        match self {
-            Suited(suited) => Suited(suited.next_dora()),
-            Honor(honor) => Honor(
-                match honor {
-                    HonorTile::Wind(wind) => HonorTile::Wind(wind.next_dora()),
-                    HonorTile::Dragon(dragon) => HonorTile::Dragon(dragon.next_dora()),
-                }
-            ),
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-
-    use super::TileValue;
-    use crate::tile::suit::Suit::{Man, Sou};
-    use crate::tile::dragon::Dragon::{White, Red};
-    use crate::game::wind::Wind::{East, South, West, North};
-
-    #[test]
-    fn test_next_dora() {
-        assert_eq!(TileValue::new_suited(Man, 4), TileValue::new_suited(Man, 3).next_dora());
-        assert_eq!(TileValue::new_dragon(Red), TileValue::new_dragon(White).next_dora());
-        assert_eq!(TileValue::new_wind(West), TileValue::new_wind(South).next_dora());
-
-        assert_eq!(TileValue::new_suited(Sou, 1), TileValue::new_suited(Sou, 9).next_dora());
-        assert_eq!(TileValue::new_wind(East), TileValue::new_wind(North).next_dora())
-    }
 }
