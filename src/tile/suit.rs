@@ -1,6 +1,5 @@
 use std::fmt::Display;
-use std::fmt::Debug;
-use Suit::{Man, Pin, Sou};
+use Suit::{Man};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Suit {
@@ -51,7 +50,7 @@ impl SuitedTile {
     }
 
     pub fn next(&self) -> Option<SuitedTile> {
-        if (self.value == 9) {
+        if self.value == 9 {
             None
         } else {
             Some(SuitedTile{suit : self.suit, value : self.value + 1})
