@@ -1,7 +1,7 @@
-mod suit;
-mod dragon;
-mod honor;
-mod tile_value;
+pub mod suit;
+pub mod dragon;
+pub mod honor;
+pub mod tile_value;
 
 use tile_value::TileValue;
 use suit::Suit;
@@ -29,6 +29,10 @@ impl Tile {
 
     fn new_dragon(dragon : Dragon, id : u8) -> Tile {
         Tile{value : TileValue::new_dragon(dragon), id}
+    }
+
+    fn next_dora(&self) -> TileValue {
+        self.value.next_dora()
     }
 
 }
