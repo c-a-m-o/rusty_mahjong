@@ -15,24 +15,47 @@ pub struct Tile {
 }
 
 impl Tile {
-    fn new(value : TileValue, id : u8) -> Tile {
+    pub fn new(value : TileValue, id : u8) -> Tile {
         Tile{value, id}
     }
 
-    fn new_suited(suit : Suit, value : u8, id : u8) -> Tile {
+    pub fn new_suited(suit : Suit, value : u8, id : u8) -> Tile {
         Tile{value : TileValue::new_suited(suit, value), id}
     }
 
-    fn new_wind(wind : Wind, id : u8) -> Tile {
+    pub fn new_wind(wind : Wind, id : u8) -> Tile {
         Tile{value : TileValue::new_wind(wind), id}
     }
 
-    fn new_dragon(dragon : Dragon, id : u8) -> Tile {
+    pub fn new_dragon(dragon : Dragon, id : u8) -> Tile {
         Tile{value : TileValue::new_dragon(dragon), id}
     }
 
-    fn next_dora(&self) -> TileValue {
+    pub fn value(&self) -> TileValue {
+        self.value
+    }
+
+    pub fn next_dora(&self) -> TileValue {
         self.value.next_dora()
+    }
+
+    pub fn followed_by(&self, other : Tile) -> bool {
+        self.value.followed_by(other.value)
+    }
+
+    pub fn next(&self) -> Option<TileValue> {
+        self.value.next()
+    }
+
+    pub fn prev(&self) -> Option<TileValue> {
+        self.value.prev()
+    }
+
+    pub fn number(&self) -> Option<u8> {
+        match self.value {
+            TileValue::Suited(suited) => Some(suited.value()),
+            TileValue::Honor(_) => None,
+        }
     }
 
 }

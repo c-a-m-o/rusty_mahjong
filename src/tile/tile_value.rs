@@ -37,13 +37,36 @@ impl TileValue {
     pub fn next_dora(&self) -> TileValue {
         match self {
             Suited(suited) => Suited(suited.next_dora()),
-            Honor(honor) => Honor(
+            Honor(honor)   => Honor(
                 match honor {
                     HonorTile::Wind(wind) => HonorTile::Wind(wind.next_dora()),
                     HonorTile::Dragon(dragon) => HonorTile::Dragon(dragon.next_dora()),
                 }
             ),
         }
+    }
+
+    pub fn next(&self) -> Option<TileValue> {
+        match self {
+            Suited(suited) => suited.next().map(|x|{Suited(x)}),
+            Honor(_)       => None,
+        }
+    }
+
+    pub fn prev(&self) -> Option<TileValue> {
+        match self {
+            Suited(suited) => suited.prev().map(|x|{Suited(x)}),
+            Honor(_)       => None,
+        }
+    }
+
+    pub fn followed_by(&self, other : TileValue) -> bool {
+        if let Suited(self_suited) = self {
+            if let Suited(other_suited) = other {
+                return self_suited.followed_by(other_suited);
+            }
+        }
+        false
     }
 }
 

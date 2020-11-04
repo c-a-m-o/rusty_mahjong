@@ -1,7 +1,7 @@
 use crate::tile::Tile;
 
 /// Represents a closed group in a mahjong hand.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Group {
     Pon(Tile, Tile, Tile),
     Chii(Tile, Tile, Tile),

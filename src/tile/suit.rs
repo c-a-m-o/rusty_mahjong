@@ -57,6 +57,14 @@ impl SuitedTile {
         }
     }
 
+    pub fn prev(&self) -> Option<SuitedTile> {
+        if self.value == 1 {
+            None
+        } else {
+            Some(SuitedTile{suit : self.suit, value : self.value - 1})
+        }
+    }
+
     /// Returns whether the `other` tile is the one that directly follows this one
     pub fn followed_by(&self, other : SuitedTile) -> bool {
         self.suit == other.suit && self.value == other.value - 1
