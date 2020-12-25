@@ -1,7 +1,7 @@
 [package]
-name = "riichi_mahjong"
+name = "rusty_mahjong"
 version = "0.1.0"
-authors = ["Corentin <corentin.ollivier@free.fr>"]
+authors = ["collivie"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
