@@ -131,7 +131,6 @@ impl HandArrangement {
     }
 
     fn extract_chii(&self, hidden_tiles : &Vec<Tile>) -> Option<(HandArrangement, Vec<Tile>)> {
-
         if hidden_tiles.len() < 3 {
             return None;
         }
@@ -166,7 +165,7 @@ impl HandArrangement {
                 return None;
             }
         }
-        let third  = hidden_tiles.remove(0);
+        let third  = hidden_tiles.remove(i);
 
         if !second.followed_by(third) {
             return None;
@@ -321,7 +320,69 @@ mod tests {
     use crate::tile::suit::Suit;
     use crate::tile::dragon::Dragon;
     use crate::hand::hand_arrangement::HandArrangement;
+    // TODO : assertions instead of prints
     
+    #[test]
+    fn test_pair_wait() {
+        let arrangement = HandArrangement::empty();
+        let tiles = vec![
+            Tile::new_dragon(Dragon::White, 0),
+        ];
+        println!("{:?}", arrangement.consume(&tiles));
+    }
+
+
+    #[test]
+    fn test_pon_wait() {
+        let arrangement = HandArrangement::empty();
+        let tiles = vec![
+            Tile::new_dragon(Dragon::White, 0),
+            Tile::new_dragon(Dragon::White, 1),
+        ];
+        println!("{:?}", arrangement.consume(&tiles));
+    }
+
+    #[test]
+    fn test_pon() {
+        let arrangement = HandArrangement::empty();
+        let tiles = vec![
+            Tile::new_suited(Suit::Man, 3, 0),
+            Tile::new_suited(Suit::Man, 3, 1),
+            Tile::new_suited(Suit::Man, 3, 2),
+            Tile::new_dragon(Dragon::White, 0),
+            Tile::new_dragon(Dragon::White, 1),
+        ];
+        println!("{:?}", arrangement.consume(&tiles));
+    }
+
+    #[test]
+    fn test_chii() {
+        let arrangement = HandArrangement::empty();
+        let tiles = vec![
+            Tile::new_suited(Suit::Man, 3, 0),
+            Tile::new_suited(Suit::Man, 4, 0),
+            Tile::new_suited(Suit::Man, 5, 0),
+            Tile::new_dragon(Dragon::White, 0),
+            Tile::new_dragon(Dragon::White, 1),
+        ];
+        println!("{:?}", arrangement.consume(&tiles));
+    }
+
+    #[test]
+    fn test_chii2() {
+        let arrangement = HandArrangement::empty();
+        let tiles = vec![
+            Tile::new_suited(Suit::Man, 3, 0),
+            Tile::new_suited(Suit::Man, 4, 0),
+            Tile::new_suited(Suit::Man, 4, 1),
+            Tile::new_suited(Suit::Man, 4, 2),
+            Tile::new_suited(Suit::Man, 5, 0),
+            Tile::new_dragon(Dragon::White, 0),
+            Tile::new_dragon(Dragon::White, 1),
+        ];
+        println!("{:?}", arrangement.consume(&tiles).len());
+    }
+
     #[test]
     fn test2() {
         let arrangement = HandArrangement::empty();
@@ -342,7 +403,7 @@ mod tests {
     }
 
     #[test]
-    fn test_mople_pinfu() {
+    fn test_pinfu() {
         let arrangement = HandArrangement::empty();
         let tiles = vec![
             Tile::new_suited(Suit::Man, 3, 0),
