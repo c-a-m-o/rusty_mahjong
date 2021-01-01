@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use super::suit::SuitedTile;
 use super::suit::Suit;
 use super::honor::HonorTile;
@@ -8,10 +10,19 @@ use TileValue::{Suited, Honor};
 /// In Riichi Mahjong, a tile can be on one of two types : a suited tile or an honor.
 /// A suited tile is from one of three groups : `Man`, `Pin` or `Sou` and holds a number.
 /// A honor tile is either one of the three dragons or one of the four winds.
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum TileValue {
     Suited(SuitedTile),
     Honor(HonorTile),
+}
+
+impl Debug for TileValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Suited(suited_tile) => write!(f, "{:?}", suited_tile),
+            Honor(honor_tile) => write!(f, "{:?}", honor_tile),
+        }
+    }
 }
 
 impl TileValue {

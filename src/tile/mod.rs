@@ -3,6 +3,8 @@ pub mod dragon;
 pub mod honor;
 pub mod tile_value;
 
+use std::fmt::Debug;
+
 use tile_value::TileValue;
 use suit::Suit;
 use dragon::Dragon;
@@ -10,10 +12,16 @@ use crate::game::wind::Wind;
 
 /// One of the 134 possible riichi mahjong tiles.
 /// The variant is stored in the `value` field and two tiles with the same value are separated by their id (there are four of each tile so id is between 0 and 3 included).
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Tile {
     value : TileValue,
     id : u8,
+}
+
+impl Debug for Tile {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}({})", self.value, self.id)
+    }
 }
 
 impl Tile {

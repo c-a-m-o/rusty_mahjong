@@ -1,5 +1,4 @@
-use std::fmt::Display;
-use Suit::{Man};
+use std::fmt::{Display,Debug};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Suit {
@@ -8,7 +7,7 @@ pub enum Suit {
     Sou,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct SuitedTile {
     suit : Suit,
     value : u8,
@@ -19,7 +18,7 @@ impl SuitedTile {
     pub fn new(suit : Suit, value : u8) -> SuitedTile {
         if value == 0 || value > 9 {
             println!("Error : creating a SuitedTile with invalid value");
-            SuitedTile{suit : Man, value : 0}
+            SuitedTile{suit : Suit::Man, value : 0}
         } else {
             SuitedTile{suit, value}
         }
@@ -72,6 +71,21 @@ impl SuitedTile {
 }
 
 
+impl Debug for SuitedTile {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.is_valid() {
+            let s = match self.suit {
+                Suit::Man => "m",
+                Suit::Pin => "p",
+                Suit::Sou => "s",
+            };
+            write!(f, "{}{}", self.value, s)
+        } else {
+            write!(f, "Invalid")
+        }
+    }
+}
+
 impl Display for SuitedTile {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.is_valid() {
@@ -86,7 +100,17 @@ impl Display for SuitedTile {
 mod tests {
     use crate::tile::suit::Suit::{Man, Pin, Sou};
     use crate::tile::suit::SuitedTile;
-    
+
+    #[test]
+    fn test_debug() {
+        let seven_sou = SuitedTile::new(Sou, 7);
+        assert_eq!("7s", &format!("{:?}", seven_sou));
+        let invalid = SuitedTile::new(Man, 10);
+        assert_eq!("Invalid", &format!("{:?}", invalid));
+        let three_pin = SuitedTile::new(Pin, 3);
+        assert_eq!("3p", &format!("{:?}", three_pin));
+    }
+
     #[test]
     fn test_valid_tile() {
         let four_pin = SuitedTile::new(Pin, 4);
